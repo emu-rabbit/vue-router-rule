@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-18cc131e","path":"/CHANGELOG.html","title":"ChangeLog","lang":"en-US","frontmatter":{},"headers":[{"level":2,"title":"v0.2.0","slug":"v0-2-0","link":"#v0-2-0","children":[]},{"level":2,"title":"v0.1.0","slug":"v0-1-0","link":"#v0-1-0","children":[]}],"git":{},"filePathRelative":"CHANGELOG.md"}');export{e as data};
