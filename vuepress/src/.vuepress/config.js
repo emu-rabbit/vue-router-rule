@@ -18,13 +18,26 @@ export default defineUserConfig({
         logo: './images/unicorn.png',
         sidebar: [{
             text: 'Introduction',
-            link: 'README.md'
+            link: '/README.md'
+        }, {
+            text: 'APIs',
+            link: '/apis/index.md',
+            children: [{
+                text: 'Core',
+                link: '/apis/core.md'
+            }, {
+                text: 'RouterRuleBuilder',
+                link: '/apis/RouterRuleBuilder.md'
+            }, {
+                text: 'Types',
+                link: '/apis/types.md'
+            }]
         }, {
             text: 'ChangeLog',
-            link: 'CHANGELOG.md'
+            link: '/CHANGELOG.md'
         }, {
             text: 'Todo',
-            link: 'TODO.md'
+            link: '/TODO.md'
         }],
         repo: 'https://github.com/emu-rabbit/vue-router-rule',
         editLink: false
