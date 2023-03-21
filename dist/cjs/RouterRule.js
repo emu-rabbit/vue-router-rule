@@ -13,7 +13,8 @@ exports.RouterRuleBuilder = void 0;
 const match_1 = require("./utils/match");
 const RuleBuilderStore = new Map();
 class RouterRuleBuilder {
-    constructor() {
+    constructor(remark) {
+        this.remark = remark;
         this.conditions = [];
     }
     // Conditions
@@ -52,7 +53,7 @@ class RouterRuleBuilder {
     }
     // Navigates
     next(result) {
-        return new RouterRuleImpl(this.conditions, result);
+        return new RouterRuleImpl(this.conditions, this.remark, result);
     }
     accept() {
         return this.next();
@@ -70,13 +71,14 @@ class RouterRuleBuilder {
     }
     // Statics
     static create() {
-        return () => new RouterRuleBuilder();
+        return (remark) => new RouterRuleBuilder(remark);
     }
 }
 exports.RouterRuleBuilder = RouterRuleBuilder;
 class RouterRuleImpl {
-    constructor(conditions, result) {
+    constructor(conditions, remark, result) {
         this.conditions = conditions;
+        this.remark = remark;
         this.result = result;
     }
     exec(context, next) {

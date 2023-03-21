@@ -1,7 +1,10 @@
 import { matchConstraint } from "./utils/match";
 const RuleBuilderStore = new Map();
 export class RouterRuleBuilder {
-    constructor() { }
+    remark;
+    constructor(remark) {
+        this.remark = remark;
+    }
     conditions = [];
     // Conditions
     when(condition) {
@@ -39,7 +42,7 @@ export class RouterRuleBuilder {
     }
     // Navigates
     next(result) {
-        return new RouterRuleImpl(this.conditions, result);
+        return new RouterRuleImpl(this.conditions, this.remark, result);
     }
     accept() {
         return this.next();
@@ -57,14 +60,16 @@ export class RouterRuleBuilder {
     }
     // Statics
     static create() {
-        return () => new RouterRuleBuilder();
+        return (remark) => new RouterRuleBuilder(remark);
     }
 }
 class RouterRuleImpl {
     conditions;
+    remark;
     result;
-    constructor(conditions, result) {
+    constructor(conditions, remark, result) {
         this.conditions = conditions;
+        this.remark = remark;
         this.result = result;
     }
     async exec(context, next) {

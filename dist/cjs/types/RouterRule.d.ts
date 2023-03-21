@@ -1,6 +1,7 @@
 import type { RouteLocationRaw } from "vue-router";
 import type { Condition, ConditionParams, LocationConstraint, NavigationGuardNextParams, RouterRule } from "./types";
 export declare class RouterRuleBuilder<ContextType> {
+    readonly remark?: string | undefined;
     private constructor();
     private conditions;
     when(condition: Condition<ContextType>): this;
@@ -16,6 +17,6 @@ export declare class RouterRuleBuilder<ContextType> {
     deny(): RouterRule<ContextType>;
     redirect(location: RouteLocationRaw): RouterRule<ContextType>;
     continue(): RouterRule<ContextType>;
-    static create<S>(): () => RouterRuleBuilder<S>;
+    static create<S>(): (remark?: string) => RouterRuleBuilder<S>;
 }
 //# sourceMappingURL=RouterRule.d.ts.map
