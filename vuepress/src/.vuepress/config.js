@@ -3,6 +3,9 @@ import { defineUserConfig, defaultTheme } from 'vuepress'
 export default defineUserConfig({
     base: '/vue-router-rule/',
     title: 'Vue Router Rule',
+    head: [
+        ['link', { rel: 'shortcut icon', href: 'favicon.ico'}]
+    ],
     markdown: {
         code: {
             lineNumbers: false
@@ -12,6 +15,7 @@ export default defineUserConfig({
         colorMode: 'dark',
         lastUpdated: false,
         contributors: false,
+        logo: './images/unicorn.png',
         sidebar: [{
             text: 'Introduction',
             link: 'README.md'
