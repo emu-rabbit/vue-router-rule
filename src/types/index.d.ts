@@ -12,5 +12,6 @@ export type LocationConstraint = string | RegExp | ((location: RouteLocation) =>
 export type NavigationGuardNextParams = Error | RouteLocationRaw | boolean | ((vm: ComponentPublicInstance) => any)
 
 export interface RouterRule<T> {
+    remark?: string,
     exec: (context: ConditionParams<T>, next: NavigationGuardNext) => Promise<boolean>
 }

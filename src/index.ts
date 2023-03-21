@@ -18,7 +18,7 @@ export function defineRule<ContextType>(
             for (let i = 0; i <= rules.length - 1; i ++) {
                 const rule = rules[i]
                 if (await rule.exec({ to, from, context }, next)){
-                    console.info(`Rule ${i} accepted from ${from.path} to ${ to.path }`)
+                    console.info(`Rule ${ rule.remark } at index ${i} accepted from ${from.path} to ${ to.path }`)
                     isBeenHandled = true
                 }
                 if (isBeenHandled) break

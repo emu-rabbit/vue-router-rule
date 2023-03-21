@@ -4,7 +4,9 @@ import { matchConstraint } from "./utils/match"
 
 const RuleBuilderStore = new Map<(string | Symbol), RouterRuleBuilder<unknown>>()
 export class RouterRuleBuilder<ContextType> {
-    private constructor() {}
+    private constructor(
+        public readonly remark?: string
+    ) {}
     private conditions: Condition<ContextType>[] = []
     
     // Conditions
@@ -54,7 +56,7 @@ export class RouterRuleBuilder<ContextType> {
 
     // Navigates
     next(result?: NavigationGuardNextParams): RouterRule<ContextType> {
-        return new RouterRuleImpl<ContextType>(this.conditions, result)
+        return new RouterRuleImpl<ContextType>(this.conditions, this.remark, result)
     }
     accept() {
         return this.next()
@@ -73,13 +75,14 @@ export class RouterRuleBuilder<ContextType> {
 
     // Statics
     static create<S>() {
-        return () => new RouterRuleBuilder<S>()
+        return (remark?: string) => new RouterRuleBuilder<S>(remark)
     }
 }
 
 class RouterRuleImpl<T> {
     constructor(
         private conditions: Condition<T>[],
+        public readonly remark?: string,
         private result?: NavigationGuardNextParams
     ) {}
 
