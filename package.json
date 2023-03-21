@@ -1,0 +1,49 @@
+{
+  "name": "vue-router-rule",
+  "version": "0.0.1",
+  "description": "A vue-router addon to manage beforeEach hook",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p ./configs/tsconfig.esm.json && move-file dist/esm/index.js dist/esm/index.mjs",
+    "build:cjs": "tsc -p ./configs/tsconfig.cjs.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emu-rabbit/vue-router-rule.git"
+  },
+  "keywords": [
+    "vue",
+    "vue-router",
+    "typescript",
+    "javascript"
+  ],
+  "author": "絵夢羽さ沂",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emu-rabbit/vue-router-rule/issues"
+  },
+  "homepage": "https://github.com/emu-rabbit/vue-router-rule#readme",
+  "files": [
+    "dist/**/*"
+  ],
+  "devDependencies": {
+    "move-file-cli": "^3.0.0",
+    "rimraf": "^4.4.0",
+    "typescript": "^5.0.2"
+  },
+  "types": "./dist/esm/types/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/types/index.d.ts",
+        "default": "./dist/esm/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/types/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
+  }
+}
