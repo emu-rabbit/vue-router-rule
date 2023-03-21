@@ -9,8 +9,20 @@ export default defineUserConfig({
         }
     },
     theme: defaultTheme({
-        colorMode: "dark",
+        colorMode: 'dark',
         lastUpdated: false,
-        contributors: false
+        contributors: false,
+        sidebar: [{
+            text: 'Introduction',
+            link: 'README.md'
+        }, {
+            text: 'ChangeLog',
+            link: 'CHANGELOG.md'
+        }, {
+            text: 'Todo',
+            link: 'TODO.md'
+        }],
+        repo: 'https://github.com/emu-rabbit/vue-router-rule',
+        editLink: false
     })
 })
