@@ -2,6 +2,7 @@
 
 - Major
     - Add context support when resolve a rule's navigation
+    - Options to toggle console.info printing
     - Unit & e2e testing
 
 - Minor
