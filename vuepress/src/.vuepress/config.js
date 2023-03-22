@@ -20,6 +20,13 @@ export default defineUserConfig({
             text: 'Introduction',
             link: '/README.md'
         }, {
+            text: 'Guides',
+            link: '/guides/index.md',
+            children: [{
+                text: 'Installation',
+                link: '/guides/installation.md'
+            }]
+        }, {
             text: 'APIs',
             link: '/apis/index.md',
             children: [{
