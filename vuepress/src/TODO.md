@@ -6,3 +6,4 @@
 
 - Minor
     - Improve type safe when using rule save-load map
+    - Handle calling defineRule more than once
