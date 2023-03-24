@@ -1,6 +1,9 @@
 import type { RouteLocation, NavigationGuardNext, RouteLocationRaw } from "vue-router"
 import type { ComponentPublicInstance } from "vue"
 
+export interface DefineRuleOptions {
+    debugInfo: boolean
+}
 export interface GuardEnvironment {
     to: RouteLocation,
     from: RouteLocation
