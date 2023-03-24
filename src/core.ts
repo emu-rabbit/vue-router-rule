@@ -1,5 +1,5 @@
 import type { Router } from "vue-router"
-import type { Awaitable, DefineRuleOptions, GuardEnvironment, RouterRule } from "./types"
+import type { DefineRuleOptions, GuardEnvironment, RouterRule } from "./types"
 
 const defaultOption: DefineRuleOptions = {
     debugInfo: false
@@ -20,10 +20,18 @@ export function defineRule<ContextType extends Object = any>(
             for (let i = 0; i <= rules.length - 1; i ++) {
                 const rule = rules[i]
                 isBeenHandled = await rule.exec({ to, from, context }, next)
-                if (options.debugInfo) console.info(`Rule ${ rule.remark } at index ${i} accepted from ${from.path} to ${ to.path }`)
+                if (options.debugInfo) logInfo(rule, i, { to, from })
                 if (isBeenHandled) break
             }
             if (!isBeenHandled) next() // Fallback to accept all route
         }
+    )
+}
+
+const logInfo = (rule: RouterRule<any>, index: number, env: GuardEnvironment) => {
+    console.info(
+        `%cRule accepted at index "${index}" from "${env.from.path}" to "${env.to.path}"\n%cRemark: ${rule.remark}`,
+        'font-size: larger',
+        'font-size: normal'
     )
 }
