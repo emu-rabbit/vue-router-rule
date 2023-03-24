@@ -1,5 +1,5 @@
 # Installation
-Here's the guide for a very simple setup
+Here's the guide for a very simple package setup
 
 ## Install package
 ```shell
@@ -26,7 +26,7 @@ defineRule(
 ```
 
 ## Import into main.js
-Import to your project entry script  
+Import it to your project entry script  
 For example `@/main.js`
 ```js
 // Must import after your Vue Router created

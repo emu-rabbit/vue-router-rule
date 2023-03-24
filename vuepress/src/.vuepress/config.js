@@ -21,7 +21,7 @@ export default defineUserConfig({
             link: '/README.md'
         }, {
             text: 'Guides',
-            link: '/guides/index.md',
+            link: '/guides/installation.md',
             children: [{
                 text: 'Installation',
                 link: '/guides/installation.md'

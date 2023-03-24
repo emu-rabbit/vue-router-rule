@@ -3,20 +3,19 @@ title: Introduction
 ---
 
 ::: warning
-This package is still under dev  
-Everything maybe changed often, uncompleted, unstable, and broken  
-Any feedback can submit at [Github Issues](https://github.com/emu-rabbit/vue-router-rule/issues)
+This package is currently under development.  
+Everything is subject to frequent changes, and it may be incomplete, unstable, or broken.  
+If you have any feedback, please submit it via [Github Issues](https://github.com/emu-rabbit/vue-router-rule/issues).
 :::
 
 # Introduction
+Vue Router Rule is an addon for [Vue Router](https://router.vuejs.org/).  
+For complex router navigation rules (especially those involving authorization and business needs), the guard [beforeEach](https://router.vuejs.org/guide/advanced/navigation-guards.html#global-before-guards) can become unwieldy, unreadable, and difficult to debug or maintain.  
+This addon provides an alternative way to define rules that are more readable and maintainable.
 
-Vue Router Rule is a [Vue Router](https://router.vuejs.org/) addon.  
-For some complex router navigation rules (usually with authorization, business needed), the guard [beforeEach](https://router.vuejs.org/guide/advanced/navigation-guards.html#global-before-guards) become huge, unreadable and hard to debug or maintains.  
-This addon provide another way to define rules for more readable and maintainable coding.
+# It changed what?
 
-# What will change?
-
-For example a original beforeEach guard ( Modified from [this](https://github.com/youlaitech/vue3-element-admin/blob/master/src/permission.ts) )
+For example, consider the following code (modified from [this](https://github.com/youlaitech/vue3-element-admin/blob/master/src/permission.ts))
 ```ts
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
@@ -53,13 +52,14 @@ router.beforeEach((to, from, next) => {
     }
 })
 ```
+::: warning  
+Yeah, lot of nested `if` here.  
+It's hard to read when the application grows.  
+Comments are scattered everywhere in nested blocks, making it difficult to trace.  
+So, if something goes wrong, you have to add `console.log` everywhere before you can debug it.  
+:::
 
-> Yeah, lot of nested if  
-> It's hard to read when application grow  
-> Comments are every where in nested blocks and make it hard to trace  
-> So, if somethings went wrong, you must add console.log every where before
-
-And with Vue Router Rule you can do it
+With the use of Vue Router Rule, it now looks like this.
 ```ts
 interface Context {
     hasToken: boolean,
@@ -124,9 +124,10 @@ async function cacheRole({ context }: ConditionParams<ContextType>) {
 }
 ```
 
-Everything is **FLAT**, no nest anymore  
-The TOP-DOWN rule make you easy to know what reason & where to go  
-And now when something went wrong, you can checkout the console info  
+Everything is **FLAT**, with no more nesting.  
+The TOP-DOWN rule makes it easy for you to know the reason and where to go.  
+Now, when something goes wrong, you can check the console information. 
+
 ![Console Screenshot](/images/console.png)
 
 So easy to trace what happened, right?
