@@ -1,5 +1,5 @@
 import type { NavigationGuardNext, RouteLocationRaw } from "vue-router"
-import type { Condition, ConditionParams, LocationConstraint, NavigationGuardNextParams, RouterRule } from "./types"
+import type { Awaitable, Condition, ExecutionEnvironment, LocationConstraint, NavigationGuardNextParams, RouterRule } from "./types"
 import { matchConstraint } from "./utils/match"
 
 const RuleBuilderStore = new Map<(string | Symbol), RouterRuleBuilder<unknown>>()
@@ -33,7 +33,7 @@ export class RouterRuleBuilder<ContextType> {
     }
 
     // Utils
-    do(task: (context: ConditionParams<ContextType>) => void) {
+    do(task: (context: ExecutionEnvironment<ContextType>) => void) {
         return this.when(
             async context => (await task(context), true)
         )
@@ -55,22 +55,25 @@ export class RouterRuleBuilder<ContextType> {
     }
 
     // Navigates
-    next(result?: NavigationGuardNextParams): RouterRule<ContextType> {
-        return new RouterRuleImpl<ContextType>(this.conditions, this.remark, result)
+    next(nextParamsProvider: (env: ExecutionEnvironment<ContextType>) => Awaitable<NavigationGuardNextParams>): RouterRule<ContextType> {
+        return new RouterRuleImpl<ContextType>(this.conditions, nextParamsProvider, this.remark)
     }
     accept() {
-        return this.next()
+        return this.next(() => undefined)
     }
     deny() {
-        return this.next(false)
+        return this.next(() => false)
     }
-    redirect(location: RouteLocationRaw) {
-        return this.next(location)
+    redirect(location: RouteLocationRaw | ((env: ExecutionEnvironment<ContextType>) => Awaitable<RouteLocationRaw>)) {
+        return this.next(async env => {
+            if (typeof location === 'function') return await location(env)
+            return location
+        })
     }
     continue() {
         return this
             .when(() => false) // Set condition to failed then skip this rule
-            .next()
+            .accept()
     }
 
     // Statics
@@ -82,15 +85,16 @@ export class RouterRuleBuilder<ContextType> {
 class RouterRuleImpl<T> {
     constructor(
         private conditions: Condition<T>[],
-        public readonly remark?: string,
-        private result?: NavigationGuardNextParams
+        private nextParamsProvider: (environment: ExecutionEnvironment<T>) => Awaitable<NavigationGuardNextParams>,
+        public readonly remark?: string
     ) {}
 
-    async exec(context: ConditionParams<T>, next: NavigationGuardNext): Promise<boolean> {
+    async exec(environment: ExecutionEnvironment<T>, next: NavigationGuardNext): Promise<boolean> {
         for (const condition of this.conditions) {
-            if (!(await condition(context))) return false
+            if (!(await condition(environment))) return false
         }
-        next(this.result as any)
+        const params = await this.nextParamsProvider(environment)
+        next(params as any)
         return true
     }
 }

@@ -1,10 +1,10 @@
-import type { RouteLocation, Router } from "vue-router"
-import type { RouterRule } from "./types"
+import type { Router } from "vue-router"
+import type { Awaitable, GuardEnvironment, RouterRule } from "./types"
 
 export function defineRule<ContextType>(
     router: Router,
     rules: RouterRule<ContextType>[],
-    initialContext?: (location: { to: RouteLocation, from: RouteLocation }) => (ContextType | Promise<ContextType>)
+    initialContext?: (location: GuardEnvironment) => Awaitable<ContextType>
 ) {
     router.beforeEach(
         async (to, from, next) => {
