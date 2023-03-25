@@ -25,6 +25,12 @@ export default defineUserConfig({
             children: [{
                 text: 'Installation',
                 link: '/guides/installation.md'
+            }, {
+                text: 'Define Router Rules',
+                link: '/guides/defineRules.md'
+            }, {
+                text: 'Context',
+                link: '/guides/context.md'
             }]
         }, {
             text: 'APIs',

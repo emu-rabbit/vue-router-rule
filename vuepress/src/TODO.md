@@ -1,8 +1,7 @@
 # TODO
 
 - Major
-    - Add context support when resolve a rule's navigation
-    - Options to toggle console.info printing
+    - Event emitter when route resolve
     - Unit & e2e testing
 
 - Minor
