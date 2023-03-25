@@ -1,6 +1,6 @@
 # Define Router Rules
 
-The most important thing is to define where the `Router` should go under certain circumstances, and we call them `RouterRules`.  
+The most important thing is to define where the `Router` should go under certain circumstances, and we call them `RouterRule`s.  
 We will use `RouterRuleBuilder` to create a builder, set its content, and finally generate an instance of `RouterRule`.
 
 To use `RouterRuleBuilder`, you must use the static function `RouterRuleBuilder.create` to generate a factory function.
