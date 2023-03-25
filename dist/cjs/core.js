@@ -10,17 +10,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defineRule = void 0;
-function defineRule(router, rules, initialContext) {
+const defaultOption = {
+    debugInfo: false
+};
+function defineRule(router, rules, options = {}) {
     router.beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
-        let isBeenHandled = false;
-        const context = initialContext ? yield initialContext({ to, from }) : undefined; // initialize context
+        options = Object.assign(Object.assign({}, defaultOption), options);
+        const context = {}; // initialize context
         // Loop the rules
+        let isBeenHandled = false;
         for (let i = 0; i <= rules.length - 1; i++) {
             const rule = rules[i];
-            if (yield rule.exec({ to, from, context }, next)) {
-                console.info(`Rule ${rule.remark} at index ${i} accepted from ${from.path} to ${to.path}`);
-                isBeenHandled = true;
-            }
+            isBeenHandled = yield rule.exec({ to, from, context }, next);
+            if (options.debugInfo)
+                logInfo(rule, i, { to, from });
             if (isBeenHandled)
                 break;
         }
@@ -29,3 +32,6 @@ function defineRule(router, rules, initialContext) {
     }));
 }
 exports.defineRule = defineRule;
+const logInfo = (rule, index, env) => {
+    console.info(`%cRule accepted at index "${index}" from "${env.from.path}" to "${env.to.path}"\n%cRemark: ${rule.remark}`, 'font-size: larger', 'font-size: normal');
+};

@@ -1,14 +1,17 @@
-export function defineRule(router, rules, initialContext) {
+const defaultOption = {
+    debugInfo: false
+};
+export function defineRule(router, rules, options = {}) {
     router.beforeEach(async (to, from, next) => {
-        let isBeenHandled = false;
-        const context = initialContext ? await initialContext({ to, from }) : undefined; // initialize context
+        options = { ...defaultOption, ...options };
+        const context = {}; // initialize context
         // Loop the rules
+        let isBeenHandled = false;
         for (let i = 0; i <= rules.length - 1; i++) {
             const rule = rules[i];
-            if (await rule.exec({ to, from, context }, next)) {
-                console.info(`Rule ${rule.remark} at index ${i} accepted from ${from.path} to ${to.path}`);
-                isBeenHandled = true;
-            }
+            isBeenHandled = await rule.exec({ to, from, context }, next);
+            if (options.debugInfo)
+                logInfo(rule, i, { to, from });
             if (isBeenHandled)
                 break;
         }
@@ -16,3 +19,6 @@ export function defineRule(router, rules, initialContext) {
             next(); // Fallback to accept all route
     });
 }
+const logInfo = (rule, index, env) => {
+    console.info(`%cRule accepted at index "${index}" from "${env.from.path}" to "${env.to.path}"\n%cRemark: ${rule.remark}`, 'font-size: larger', 'font-size: normal');
+};

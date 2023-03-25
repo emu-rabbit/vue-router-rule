@@ -41,22 +41,26 @@ export class RouterRuleBuilder {
         return this;
     }
     // Navigates
-    next(result) {
-        return new RouterRuleImpl(this.conditions, this.remark, result);
+    next(nextParamsProvider) {
+        return new RouterRuleImpl(this.conditions, nextParamsProvider, this.remark);
     }
     accept() {
-        return this.next();
+        return this.next(() => undefined);
     }
     deny() {
-        return this.next(false);
+        return this.next(() => false);
     }
     redirect(location) {
-        return this.next(location);
+        return this.next(async (env) => {
+            if (typeof location === 'function')
+                return await location(env);
+            return location;
+        });
     }
     continue() {
         return this
             .when(() => false) // Set condition to failed then skip this rule
-            .next();
+            .accept();
     }
     // Statics
     static create() {
@@ -65,19 +69,20 @@ export class RouterRuleBuilder {
 }
 class RouterRuleImpl {
     conditions;
+    nextParamsProvider;
     remark;
-    result;
-    constructor(conditions, remark, result) {
+    constructor(conditions, nextParamsProvider, remark) {
         this.conditions = conditions;
+        this.nextParamsProvider = nextParamsProvider;
         this.remark = remark;
-        this.result = result;
     }
-    async exec(context, next) {
+    async exec(environment, next) {
         for (const condition of this.conditions) {
-            if (!(await condition(context)))
+            if (!(await condition(environment)))
                 return false;
         }
-        next(this.result);
+        const params = await this.nextParamsProvider(environment);
+        next(params);
         return true;
     }
 }

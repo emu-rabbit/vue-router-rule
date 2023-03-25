@@ -1,7 +1,4 @@
-import type { RouteLocation, Router } from "vue-router";
-import type { RouterRule } from "./types";
-export declare function defineRule<ContextType>(router: Router, rules: RouterRule<ContextType>[], initialContext?: (location: {
-    to: RouteLocation;
-    from: RouteLocation;
-}) => (ContextType | Promise<ContextType>)): void;
+import type { Router } from "vue-router";
+import type { DefineRuleOptions, RouterRule } from "./types";
+export declare function defineRule<ContextType extends Object = any>(router: Router, rules: RouterRule<ContextType>[], options?: Partial<DefineRuleOptions>): void;
 //# sourceMappingURL=core.d.ts.map
