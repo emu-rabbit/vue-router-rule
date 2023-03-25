@@ -1,17 +1,20 @@
 import type { NavigationGuardNext, RouteLocationRaw } from "vue-router"
-import type { Awaitable, Condition, ExecutionEnvironment, LocationConstraint, NavigationGuardNextParams, RouterRule } from "./types"
+import type { Awaitable, ExecutionEnvironment, LocationConstraint, NavigationGuardNextParams, RouterRule } from "./types"
 import { matchConstraint } from "./utils/match"
 
-const RuleBuilderStore = new Map<(string | Symbol), RouterRuleBuilder<unknown>>()
 export class RouterRuleBuilder<ContextType> {
     private constructor(
         public readonly remark?: string
     ) {}
-    private conditions: Condition<ContextType>[] = []
+    private commands: Command<ContextType>[] = []
     
     // Conditions
-    when(condition: Condition<ContextType>): this { 
-        return this.conditions.push(condition), this
+    when(condition: (context: ExecutionEnvironment<ContextType>) => unknown): this { 
+        this.commands.push({
+            type: 'condition',
+            condition
+        })
+        return this
     }
     to(constraint: LocationConstraint | LocationConstraint[]) {
         return this.when(
@@ -34,29 +37,35 @@ export class RouterRuleBuilder<ContextType> {
 
     // Utils
     do(task: (context: ExecutionEnvironment<ContextType>) => void) {
-        return this.when(
-            async context => (await task(context), true)
-        )
+        this.commands.push({
+            type: 'task',
+            task
+        })
+        return this
     }
 
     // Store
     save(key: string | Symbol) {
-        const newBuilder = new RouterRuleBuilder<ContextType>()
-        newBuilder.conditions = [...this.conditions]
-        RuleBuilderStore.set(key, newBuilder as RouterRuleBuilder<unknown>)
+        // const newBuilder = new RouterRuleBuilder<ContextType>()
+        // newBuilder.conditions = [...this.conditions]
+        // RuleBuilderStore.set(key, newBuilder as RouterRuleBuilder<unknown>)
         return this
     }
     load(key: string | Symbol) {
-        const storeBuilder = RuleBuilderStore.get(key)
-        if (storeBuilder) {
-            this.conditions = [...storeBuilder.conditions]
-        }
+        // const storeBuilder = RuleBuilderStore.get(key)
+        // if (storeBuilder) {
+        //     this.conditions = [...storeBuilder.conditions]
+        // }
         return this
     }
 
     // Navigates
-    next(nextParamsProvider: (env: ExecutionEnvironment<ContextType>) => Awaitable<NavigationGuardNextParams>): RouterRule<ContextType> {
-        return new RouterRuleImpl<ContextType>(this.conditions, nextParamsProvider, this.remark)
+    next(nextParamProvider: NextParamProvider<ContextType>): RouterRule<ContextType> {
+        this.commands.push({
+            type: 'next',
+            paramProvider: nextParamProvider
+        })
+        return new RouterRuleImpl<ContextType>(this.commands, this.remark)
     }
     accept() {
         return this.next(() => undefined)
@@ -84,17 +93,42 @@ export class RouterRuleBuilder<ContextType> {
 
 class RouterRuleImpl<T> {
     constructor(
-        private conditions: Condition<T>[],
-        private nextParamsProvider: (environment: ExecutionEnvironment<T>) => Awaitable<NavigationGuardNextParams>,
+        private commands: Command<T>[],
         public readonly remark?: string
     ) {}
 
     async exec(environment: ExecutionEnvironment<T>, next: NavigationGuardNext): Promise<boolean> {
-        for (const condition of this.conditions) {
-            if (!(await condition(environment))) return false
+        for (const command of this.commands) {
+            switch (command.type) {
+                case 'condition':
+                    if (!(await command.condition(environment))) return false
+                    break
+                case 'task':
+                    await command.task(environment)
+                    break
+                case 'next':
+                    next((await command.paramProvider(environment)) as any)
+                    return true
+            }
         }
-        const params = await this.nextParamsProvider(environment)
-        next(params as any)
-        return true
+        throw Error('Rule lack of an result')
     }
+}
+
+type Condition<T> = (context: ExecutionEnvironment<T>) => unknown
+type Task<T> = (context: ExecutionEnvironment<T>) => void
+type NextParamProvider<T> = (env: ExecutionEnvironment<T>) => Awaitable<NavigationGuardNextParams>
+
+type Command<T> = ConditionCommand<T> | TaskCommand<T> | NextCommand<T>
+type ConditionCommand<T> = {
+    type: 'condition',
+    condition: Condition<T>
+}
+type TaskCommand<T> = {
+    type: 'task',
+    task: Task<T>
+}
+type NextCommand<T> = {
+    type: 'next',
+    paramProvider: NextParamProvider<T>
 }

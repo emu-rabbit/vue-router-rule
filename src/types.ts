@@ -11,7 +11,6 @@ export interface GuardEnvironment {
 export interface ExecutionEnvironment<ContextType> extends GuardEnvironment {
     context: ContextType
 }
-export type Condition<T> = (context: ExecutionEnvironment<T>) => unknown
 
 export type LocationConstraint = string | RegExp | ((location: RouteLocation) => Boolean)
 export type NavigationGuardNextParams = undefined | Error | RouteLocationRaw | boolean | ((vm: ComponentPublicInstance) => any)
