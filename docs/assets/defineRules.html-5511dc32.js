@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-54f0115c","path":"/guides/defineRules.html","title":"Define Router Rules","lang":"en-US","frontmatter":{},"headers":[],"git":{},"filePathRelative":"guides/defineRules.md"}');export{e as data};
