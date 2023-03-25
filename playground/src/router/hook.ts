@@ -3,11 +3,19 @@ import router from './index'
 
 const Builder = RouterRuleBuilder.create()
 
+const info = 'info'
+
 defineRule(
     router,
     [
-        Builder()
+        Builder('aa')
+            .to(['/info', '/ppp'])
+            .accept(),
+        Builder('First meet')
             .any()
-            .accept()
-    ]
+            .redirect(() => `/${info}`)
+    ],
+    {
+        debugInfo: true
+    }
 )

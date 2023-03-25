@@ -11,7 +11,7 @@ const router = createRouter({
             path: '/',
             component: Layout,
             children: [{
-                path: '',
+                path: '/:pathMatch(.*)*',
                 component: RouteInfo
             }]
         }
