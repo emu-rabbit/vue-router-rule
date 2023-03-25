@@ -1,6 +1,7 @@
 # TODO
 
 - Major
+    - Cache result of `#save`, `#load`
     - Event emitter when route resolve
     - Unit & e2e testing
 
