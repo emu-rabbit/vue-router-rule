@@ -13,11 +13,12 @@ export interface ExecutionEnvironment<ContextType> extends GuardEnvironment {
 }
 
 export type LocationConstraint = string | RegExp | ((location: RouteLocation) => Boolean)
+export type StoreKey = string | Symbol
 export type NavigationGuardNextParams = undefined | Error | RouteLocationRaw | boolean | ((vm: ComponentPublicInstance) => any)
 
 export interface RouterRule<T> {
     remark?: string,
-    exec: (context: ExecutionEnvironment<T>, next: NavigationGuardNext) => Promise<boolean>
+    exec: (context: ExecutionEnvironment<T>, next: NavigationGuardNext, store: StoreKey[]) => Promise<boolean>
 }
 
 // Utils
