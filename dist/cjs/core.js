@@ -10,26 +10,50 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defineRule = void 0;
+const RouterRuleBus_1 = require("./RouterRuleBus");
 const defaultOption = {
     debugInfo: false
 };
 function defineRule(router, rules, options = {}) {
+    const bus = new RouterRuleBus_1.RouterRuleBus();
     router.beforeEach((to, from, next) => __awaiter(this, void 0, void 0, function* () {
         options = Object.assign(Object.assign({}, defaultOption), options);
         const context = {}; // initialize context
+        const store = [];
         // Loop the rules
         let isBeenHandled = false;
         for (let i = 0; i <= rules.length - 1; i++) {
             const rule = rules[i];
-            isBeenHandled = yield rule.exec({ to, from, context }, next);
-            if (options.debugInfo)
-                logInfo(rule, i, { to, from });
-            if (isBeenHandled)
+            // Execute results
+            const executeResult = yield rule.exec({ to, from, context }, next, store);
+            isBeenHandled = executeResult.isBeenHandled;
+            const nextParam = executeResult.nextParams;
+            if (isBeenHandled && nextParam !== null) {
+                if (options.debugInfo)
+                    logInfo(rule, i, { to, from });
+                // Emit events
+                bus.emit('rule-resolve', { from, to, context, nextParam });
+                switch (nextParam) {
+                    case undefined:
+                    case true:
+                        bus.emit('rule-accept', { from, to, context });
+                        break;
+                    case false:
+                        bus.emit('rule-deny', { from, to, context });
+                        break;
+                    default:
+                        bus.emit('rule-redirect', { from, to, context, nextParam });
+                }
                 break;
+            }
         }
-        if (!isBeenHandled)
-            next(); // Fallback to accept all route
+        // Fallback to accept all route
+        if (!isBeenHandled) {
+            bus.emit('no-rule-match', { from, to, context });
+            next();
+        }
     }));
+    return { bus };
 }
 exports.defineRule = defineRule;
 const logInfo = (rule, index, env) => {
