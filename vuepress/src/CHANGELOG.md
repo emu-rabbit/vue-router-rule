@@ -1,5 +1,8 @@
 # ChangeLog
 
+## v0.4.1
+- Feature
+    - `RouterRule#remark`, `index` are accessible in bus events now
 ## v0.4.0
 - **BREAKING CHANGE**
     - `RouterRuleBuilder#save`, `RouterRuleBuilder#load` will now cache the result instead of run all conditions again
