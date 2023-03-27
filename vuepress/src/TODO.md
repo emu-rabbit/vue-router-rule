@@ -1,10 +1,8 @@
 # TODO
 
 - Major
-    - Cache result of `#save`, `#load`
     - Event emitter when route resolve
     - Unit & e2e testing
 
 - Minor
-    - Improve type safe when using rule save-load map
     - Handle calling defineRule more than once
