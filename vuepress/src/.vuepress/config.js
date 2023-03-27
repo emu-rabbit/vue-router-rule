@@ -31,6 +31,9 @@ export default defineUserConfig({
             }, {
                 text: 'Context',
                 link: '/guides/context.md'
+            }, {
+                text: 'Store',
+                link: '/guides/store.md'
             }]
         }, {
             text: 'APIs',
