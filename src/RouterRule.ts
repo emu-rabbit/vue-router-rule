@@ -1,5 +1,5 @@
 import type { NavigationGuardNext, RouteLocationRaw } from "vue-router"
-import type { Awaitable, ExecutionEnvironment, LocationConstraint, NavigationGuardNextParams, RouterRule, StoreKey } from "./types"
+import type { Awaitable, ExecutionEnvironment, LocationConstraint, NavigationGuardNextParams, RouterRule, RuleExecuteResult, StoreKey } from "./types"
 import { matchConstraint } from "./utils/match"
 
 export class RouterRuleBuilder<ContextType> {
@@ -100,11 +100,11 @@ class RouterRuleImpl<T> {
         public readonly remark?: string
     ) {}
 
-    async exec(environment: ExecutionEnvironment<T>, next: NavigationGuardNext, store: StoreKey[]): Promise<boolean> {
+    async exec(environment: ExecutionEnvironment<T>, next: NavigationGuardNext, store: StoreKey[]): Promise<RuleExecuteResult> {
         for (const command of this.commands) {
             switch (command.type) {
                 case 'condition':
-                    if (!(await command.condition(environment))) return false
+                    if (!(await command.condition(environment))) return { isBeenHandled: false, nextParams: null }
                     break
                 case 'task':
                     await command.task(environment)
@@ -113,12 +113,13 @@ class RouterRuleImpl<T> {
                     if (command.action === 'save') {
                         store.push(command.key)
                     } else {
-                        if (!store.includes(command.key)) return false
+                        if (!store.includes(command.key)) return { isBeenHandled: false, nextParams: null }
                     }
                     break
                 case 'next':
-                    next((await command.paramProvider(environment)) as any)
-                    return true
+                    const params = await command.paramProvider(environment)
+                    next(params as any)
+                    return { isBeenHandled: true, nextParams: params }
             }
         }
         throw Error('Rule lack of an result')

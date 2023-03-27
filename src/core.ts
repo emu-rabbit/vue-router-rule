@@ -1,5 +1,6 @@
 import type { Router } from "vue-router"
-import type { DefineRuleOptions, GuardEnvironment, RouterRule, StoreKey } from "./types"
+import { RouterRuleBus } from "./RouterRuleBus"
+import type { DefineRuleOptions, GuardEnvironment, NavigationGuardNextParams, RouterRule, StoreKey } from "./types"
 
 const defaultOption: DefineRuleOptions = {
     debugInfo: false
@@ -10,6 +11,7 @@ export function defineRule<ContextType extends Object = any>(
     rules: RouterRule<ContextType>[],
     options: Partial<DefineRuleOptions> = {}
 ) {
+    const bus = new RouterRuleBus<ContextType>()
     router.beforeEach(
         async (to, from, next) => {
             options = { ...defaultOption, ...options }
@@ -20,13 +22,40 @@ export function defineRule<ContextType extends Object = any>(
             let isBeenHandled = false
             for (let i = 0; i <= rules.length - 1; i ++) {
                 const rule = rules[i]
-                isBeenHandled = await rule.exec({ to, from, context }, next, store)
-                if (options.debugInfo) logInfo(rule, i, { to, from })
-                if (isBeenHandled) break
+
+                // Execute results
+                const executeResult = await rule.exec({ to, from, context }, next, store)
+                isBeenHandled = executeResult.isBeenHandled
+                const nextParam = executeResult.nextParams
+
+                if (isBeenHandled && nextParam !== null) {
+                    if (options.debugInfo) logInfo(rule, i, { to, from })
+
+                    // Emit events
+                    bus.emit('rule-resolve', { from, to, context, nextParam })
+                    switch(nextParam) {
+                        case undefined:
+                        case true:
+                            bus.emit('rule-accept', { from, to, context })
+                            break
+                        case false:
+                            bus.emit('rule-deny', { from, to, context })
+                            break
+                        default:
+                            bus.emit('rule-redirect', { from, to, context, nextParam })
+                    }
+                    break
+                }
             }
-            if (!isBeenHandled) next() // Fallback to accept all route
+            
+            // Fallback to accept all route
+            if (!isBeenHandled) {
+                bus.emit('no-rule-match', { from, to, context })
+                next()
+            }
         }
     )
+    return { bus }
 }
 
 const logInfo = (rule: RouterRule<any>, index: number, env: GuardEnvironment) => {
