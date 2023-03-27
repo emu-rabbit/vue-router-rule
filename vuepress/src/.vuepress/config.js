@@ -34,6 +34,9 @@ export default defineUserConfig({
             }, {
                 text: 'Store',
                 link: '/guides/store.md'
+            }, {
+                text: 'Event Bus',
+                link: '/guides/event-bus.md'
             }]
         }, {
             text: 'APIs',
