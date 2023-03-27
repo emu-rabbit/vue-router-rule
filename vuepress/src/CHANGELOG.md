@@ -1,5 +1,15 @@
 # ChangeLog
 
+## v0.4.0
+- **BREAKING CHANGE**
+    - `RouterRuleBuilder#save`, `RouterRuleBuilder#load` will now cache the result instead of run all conditions again
+    - `RouterRule<C>#execute` return type changed from boolean to an object contain the next parameter finally passed in
+- Feature
+    - Event system bus for listening rule events
+- Refactor
+    - Improve property SRP
+    - Improve typing
+    - Test workflow added
 ## v0.3.0
 - **BREAKING CHANGE**
     - Rename interface `ConditionParams<T>` to `ExecutionEnvironment<T>`
