@@ -30,14 +30,18 @@ type BusEventPayloadBase<ContextType> = {
     to: RouteLocation,
     context: ContextType
 }
+type BusEventPayloadWithInfo<ContextType> = {
+    index: number,
+    remark: string | undefined
+} & BusEventPayloadBase<ContextType>
 type BusEventPayloadWithParam<ContextType> = {
     nextParam: NavigationGuardNextParams
-} & BusEventPayloadBase<ContextType>
+} & BusEventPayloadWithInfo<ContextType>
 
 type BusEventMap<ContextType> = {
     'rule-resolve': BusEventPayloadWithParam<ContextType>,
-    'rule-accept': BusEventPayloadBase<ContextType>,
-    'rule-deny': BusEventPayloadBase<ContextType>,
+    'rule-accept': BusEventPayloadWithInfo<ContextType>,
+    'rule-deny': BusEventPayloadWithInfo<ContextType>,
     'rule-redirect': BusEventPayloadWithParam<ContextType>,
     'no-rule-match': BusEventPayloadBase<ContextType>
 }

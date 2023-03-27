@@ -29,20 +29,21 @@ export function defineRule<ContextType extends Object = any>(
                 const nextParam = executeResult.nextParams
 
                 if (isBeenHandled && nextParam !== null) {
+                    const { remark } = rule
                     if (options.debugInfo) logInfo(rule, i, { to, from })
 
                     // Emit events
-                    bus.emit('rule-resolve', { from, to, context, nextParam })
+                    bus.emit('rule-resolve', { from, to, context, index: i, remark, nextParam })
                     switch(nextParam) {
                         case undefined:
                         case true:
-                            bus.emit('rule-accept', { from, to, context })
+                            bus.emit('rule-accept', { from, to, context, index: i, remark })
                             break
                         case false:
-                            bus.emit('rule-deny', { from, to, context })
+                            bus.emit('rule-deny', { from, to, context, index: i, remark })
                             break
                         default:
-                            bus.emit('rule-redirect', { from, to, context, nextParam })
+                            bus.emit('rule-redirect', { from, to, context, index: i, remark, nextParam })
                     }
                     break
                 }
