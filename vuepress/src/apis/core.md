@@ -1,5 +1,9 @@
 # Core APIs
 
+::: warning
+This page is still uncompleted
+:::
+
 Here are some core methods of Vue Router Rule
 
 - [defineRule](#definerule)
@@ -9,23 +13,25 @@ Define a set of rules to the router
 - Signature
     ```ts
     interface defineRule{
-        <ContextType>(
+        <ContextType extends Object = any>(
             router: Router,
             rules: RouterRule<ContextType>[],
-            initialContext?: (location: {to: RouteLocation, from: RouteLocation}) => (ContextType | Promise<ContextType>)
-        ): void
+            options?: Partial<DefineRuleOptions>
+        ): {
+            bus: RouterRuleBus<ContextType>;
+        }
     }
     ```
 - GenericTypes
-    | name | description |
-    | ---- |    ----     |
-    | `ContextType` | The context type |
-- Parameters
-    | name | type | description |
+    | name | default | description |
     | ---- | ---- |    ----     |
-    | router | [`Router`](https://router.vuejs.org/api/interfaces/Router.html) | The Vue router instance |
-    | rules | `RouterRule<ContextType>[]` | The defined rules |
-    | initialContext | `(location: { to: RouteLocation, from: RouteLocation }) => (ContextType \| Promise<ContextType>)` | The provider function for the initial context |
+    | `ContextType` | `any` | The context type |
+- Parameters
+    | name | default | type | description |
+    | ---- | ---- | ---- |    ----     |
+    | router | X | [`Router`](https://router.vuejs.org/api/interfaces/Router.html) | The Vue router instance |
+    | rules | X | `RouterRule<ContextType>[]` | The defined rules |
+    | options | `{ debugInfo: false }` | `Partial<DefineRuleOptions>` | The options |
     
 - Return `void`
 ```ts

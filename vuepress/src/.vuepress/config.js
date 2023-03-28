@@ -40,17 +40,14 @@ export default defineUserConfig({
             }]
         }, {
             text: 'APIs',
-            link: '/apis/index.md',
+            link: '/apis/core.md',
             children: [{
                 text: 'Core',
                 link: '/apis/core.md'
-            }, {
-                text: 'RouterRuleBuilder',
-                link: '/apis/RouterRuleBuilder.md'
-            }, {
-                text: 'Types',
-                link: '/apis/types.md'
             }]
+        }, {
+            text: 'FAQ',
+            link: '/FAQ.md'
         }, {
             text: 'ChangeLog',
             link: '/CHANGELOG.md'

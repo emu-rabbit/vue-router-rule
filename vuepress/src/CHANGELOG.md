@@ -39,3 +39,9 @@
 
 ## v0.1.0
 Initial version of basic usage
+
+
+
+## v0.4.2 `unpublished`
+- Fix
+    - No type constraint on `RouterRuleBuilder`, `RouterRuleBuilder.create` & `RouterRuleBus`
