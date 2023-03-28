@@ -30,4 +30,4 @@ In addition, all methods support asynchronous operations, and if your parameter 
 
 ### U....Unicorn?
 Yes, this is the <span style="background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);-webkit-background-clip: text;color: transparent;">RAINBOW UNICORN</span> that I drew for someone.
-![unicorn](images/unicorn.png)
+![unicorn](/images/unicorn.png)
