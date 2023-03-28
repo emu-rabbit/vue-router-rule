@@ -52,12 +52,11 @@ router.beforeEach((to, from, next) => {
     }
 })
 ```
-::: warning  
+
 Yeah, lot of nested `if` here.  
 It's hard to read when the application grows.  
 Comments are scattered everywhere in nested blocks, making it difficult to trace.  
 So, if something goes wrong, you have to add `console.log` everywhere before you can debug it.  
-:::
 
 With the use of Vue Router Rule, it now looks like this.
 ```ts
@@ -130,4 +129,7 @@ Now, when something goes wrong, you can check the console information.
 
 ![Console Screenshot](/images/console.png)
 
-So easy to trace what happened, right?
+Vue Router Rule also provides a wide range of [events](./guides/event-bus.md) for listening, which allows you to better track which rule has been accepted and even retrieve the parameter passed into the `next` function.  
+With these events, you can define custom behaviors and make your application more flexible.
+
+So easy, right?
