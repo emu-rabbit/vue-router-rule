@@ -2,7 +2,7 @@ import type { NavigationGuardNext, RouteLocationRaw } from "vue-router"
 import type { Awaitable, ExecutionEnvironment, LocationConstraint, NavigationGuardNextParams, RouterRule, RuleExecuteResult, StoreKey } from "./types"
 import { matchConstraint } from "./utils/match"
 
-export class RouterRuleBuilder<ContextType> {
+export class RouterRuleBuilder<ContextType extends Object = any> {
     private constructor(
         public readonly remark?: string
     ) {}
@@ -89,7 +89,7 @@ export class RouterRuleBuilder<ContextType> {
     }
 
     // Statics
-    static create<S>() {
+    static create<S extends Object = any>() {
         return (remark?: string) => new RouterRuleBuilder<S>(remark)
     }
 }

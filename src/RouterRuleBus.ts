@@ -1,6 +1,6 @@
 import type { BusEventListener, BusEventName, BusEventPayload } from './types'
 
-export class RouterRuleBus<C> {
+export class RouterRuleBus<C extends Object = any> {
     private readonly listeners : {
         [K in BusEventName<C>]?: BusEventListener<C, K>[]
     } = {}
