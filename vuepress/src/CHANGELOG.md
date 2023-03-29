@@ -1,5 +1,8 @@
 # ChangeLog
 
+## v0.4.2 
+- Fix
+    - No type constraint on `RouterRuleBuilder`, `RouterRuleBuilder.create` & `RouterRuleBus`
 ## v0.4.1
 - Feature
     - `RouterRule#remark`, `index` are accessible in bus events now
@@ -41,7 +44,3 @@
 Initial version of basic usage
 
 
-
-## v0.4.2 `unpublished`
-- Fix
-    - No type constraint on `RouterRuleBuilder`, `RouterRuleBuilder.create` & `RouterRuleBus`
