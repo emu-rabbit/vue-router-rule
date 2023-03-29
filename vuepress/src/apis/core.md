@@ -1,9 +1,5 @@
 # Core APIs
 
-::: warning
-This page is still uncompleted
-:::
-
 Here are some core methods of Vue Router Rule
 
 - [defineRule](#definerule)
@@ -33,7 +29,7 @@ Define a set of rules to the router
     | rules | X | `RouterRule<ContextType>[]` | The defined rules |
     | options | `{ debugInfo: false }` | `Partial<DefineRuleOptions>` | The options |
     
-- Return `void`
+- Return `{ bus: RouterRuleBus<ContextType> }`
 ```ts
 // A example of all-accept routing
 const Builder = RouterRuleBuilder.create()

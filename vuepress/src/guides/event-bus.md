@@ -9,7 +9,7 @@ When you call `defineRule`, it returns an instance of `RouterRuleBus` that can b
 - `rule-deny`  
     This event is triggered when any navigation is denied, more accurately, when `next(false)` is called.
 - `rule-redirect`  
-    This event is triggered when any navigation is denied, more accurately, navigation is resolved without accept or denied.
+    This event is triggered when any navigation is redirected, more accurately, navigation is resolved without accept or denied.
 - `no-rule-match`  
     This event is triggered when no rule is match in the end. In this situation, navigation will be accepted by default. 
 
