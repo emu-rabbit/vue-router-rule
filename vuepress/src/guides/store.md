@@ -72,7 +72,22 @@ defineRule(
 )
 ```
 You might think it doesn't make much of a difference, but using `RouterRuleBuilder#save` and `RouterRuleBuilder#load` can achieve the DRY principle and the result will be cached, so the `() => user.token` passed function will not be executed the second time. If there are more than one linked conditions, none of the conditions will be executed.  
-This also includes using work assignments like `#do` before `#save`. 
+This also includes using work assignments like `#do` before `#save`.   
+
+If you find that using strings may lead to typos, `#save` and `#load` also support passing [`Symbols`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) as arguments here.
+```ts
+const userHasToken = Symbol('userHasToken')
+
+Builder()
+    .when(() => user.token).save(userHasToken) // Here we save
+    .when(() => permissionAllow)
+    .accept()
+
+Builder()
+    .load(userHasToken) // Here we load
+    .when(() => !permissionAllow)
+    .redirect('/402')
+```
 
 :::tip
 In Vue Router Rule, we try to avoid any nesting as much as possible and keep everything flat.  

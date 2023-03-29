@@ -35,11 +35,9 @@ defineRule(
     ]
 )
 
-const initializeContext = () => {
-    return {
-        username: piniaStore.username,
-        shouldGetUnicorn: Math.random() < 0.5
-    }
+const initializeContext = ({ context }) => {
+    context.username = piniaStore.username,
+    context.shouldGetUnicorn = Math.random() < 0.5
 }
 ```
 
