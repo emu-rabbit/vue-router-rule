@@ -22,11 +22,9 @@ import{_ as n,p as s,q as a,a1 as t}from"./framework-5866ffd3.js";const p={},o=t
     <span class="token punctuation">]</span>
 <span class="token punctuation">)</span>
 
-<span class="token keyword">const</span> <span class="token function-variable function">initializeContext</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token punctuation">{</span>
-        username<span class="token operator">:</span> piniaStore<span class="token punctuation">.</span>username<span class="token punctuation">,</span>
-        shouldGetUnicorn<span class="token operator">:</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0.5</span>
-    <span class="token punctuation">}</span>
+<span class="token keyword">const</span> <span class="token function-variable function">initializeContext</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> context <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    context<span class="token punctuation">.</span>username <span class="token operator">=</span> piniaStore<span class="token punctuation">.</span>username<span class="token punctuation">,</span>
+    context<span class="token punctuation">.</span>shouldGetUnicorn <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0.5</span>
 <span class="token punctuation">}</span>
 </code></pre></div><p>You can also modify the contents of the Context midway through the process.<br> However, please note that you should not directly modify the entire Context object.</p><div class="language-typescript" data-ext="ts"><pre class="language-typescript"><code><span class="token comment">// ...</span>
 <span class="token function">Builder</span><span class="token punctuation">(</span><span class="token string">&#39;Re-get username&#39;</span><span class="token punctuation">)</span>
