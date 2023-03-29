@@ -1,6 +1,6 @@
 {
   "name": "vue-router-rule",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A vue-router addon to manage beforeEach hook",
   "scripts": {
     "clean": "rimraf dist",

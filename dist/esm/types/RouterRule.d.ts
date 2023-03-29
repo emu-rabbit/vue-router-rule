@@ -1,6 +1,6 @@
 import type { RouteLocationRaw } from "vue-router";
 import type { Awaitable, ExecutionEnvironment, LocationConstraint, NavigationGuardNextParams, RouterRule, StoreKey } from "./types";
-export declare class RouterRuleBuilder<ContextType> {
+export declare class RouterRuleBuilder<ContextType extends Object = any> {
     readonly remark?: string | undefined;
     private constructor();
     private commands;
@@ -17,7 +17,7 @@ export declare class RouterRuleBuilder<ContextType> {
     deny(): RouterRule<ContextType>;
     redirect(location: RouteLocationRaw | ((env: ExecutionEnvironment<ContextType>) => Awaitable<RouteLocationRaw>)): RouterRule<ContextType>;
     continue(): RouterRule<ContextType>;
-    static create<S>(): (remark?: string) => RouterRuleBuilder<S>;
+    static create<S extends Object = any>(): (remark?: string) => RouterRuleBuilder<S>;
 }
 type NextParamProvider<T> = (env: ExecutionEnvironment<T>) => Awaitable<NavigationGuardNextParams>;
 export {};
