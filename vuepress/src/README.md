@@ -70,6 +70,10 @@ const Builder = RouterRuleBuilder.create<Context>()
 defineRule(
     router,
     [
+        Builder('Initialize context')
+            .do(initializeContext)
+            .continue(),
+
         Builder('User with token will redirect to root from login page')
             .withContext(c => c.hasToken).save('hasToken')
             .to('/login')
@@ -103,15 +107,12 @@ defineRule(
         Builder('Redirect user without token to login')
             .any()
             .redirect('/login')
-    ],
-    initialContextProvider
+    ]
 )
 
-function initialContextProvider() {
-    return {
-        hasToken: !!localStorage.getItem('accessToken'),
-        hasRoles: () => !!userStore.roles && userStore.roles.length > 0
-    }
+function initializeContext({ context }) {
+    context.hasToken = !!localStorage.getItem('accessToken'),
+    context.hasRoles = () => !!userStore.roles && userStore.roles.length > 0
 }
 
 async function cacheRole({ context }: ConditionParams<ContextType>) {
@@ -125,7 +126,8 @@ async function cacheRole({ context }: ConditionParams<ContextType>) {
 
 Everything is **FLAT**, with no more nesting.  
 The TOP-DOWN rule makes it easy for you to know the reason and where to go.  
-Now, when something goes wrong, you can check the console information. 
+Now, when something goes wrong, you can check the console information.  
+(With `debugInfo` option set to `true`) 
 
 ![Console Screenshot](/images/console.png)
 
