@@ -12,7 +12,7 @@ Afterwards, we can call the variable `Builder` above and pass in the `remark` pa
 This `remark` parameter will become `RouterRule#remark` in the end.  
 Although it is optional, it is strongly recommended to fill it in as it will make debugging and code reading easier later on.
 ```ts
-Builder('Accept route in white list')
+Builder('Accept route in allow list')
 Builder('Deny user without permission')
 Builder('Random chance navigate to the rainbow unicorn')
 ```
