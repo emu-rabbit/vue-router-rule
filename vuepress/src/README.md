@@ -17,7 +17,7 @@ This addon provides an alternative way to define rules that are more readable an
 
 For example, consider the following code (modified from [this](https://github.com/youlaitech/vue3-element-admin/blob/master/src/permission.ts))
 ```ts
-const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
+const allowList = ['/login', '/auth-redirect'] // no redirect allowList
 
 router.beforeEach((to, from, next) => {
     const hasToken = getToken() // determine whether the user has logged in
@@ -42,8 +42,8 @@ router.beforeEach((to, from, next) => {
             }
         }
     } else {
-        if (whiteList.indexOf(to.path) !== -1) {
-            // in the free login whitelist, go directly
+        if (allowList.indexOf(to.path) !== -1) {
+            // in the free login allowList, go directly
             next()
         } else {
             // other pages that do not have permission to access are redirected to the login page.
@@ -99,9 +99,9 @@ defineRule(
             .do(() => userStore.resetToken())
             .redirect('/login'),
 
-        Builder('Accept user without token but want to whitelist')
+        Builder('Accept user without token but want to allowList')
             .withContext(c => !c.hasToken)
-            .to(to => whiteList.indexOf(to.path) !== -1)
+            .to(to => allowList.indexOf(to.path) !== -1)
             .accept(),
 
         Builder('Redirect user without token to login')
