@@ -4,7 +4,8 @@ export default defineUserConfig({
     base: '/vue-router-rule/',
     title: 'Vue Router Rule',
     head: [
-        ['link', { rel: 'shortcut icon', href: 'favicon.ico'}]
+        ['link', { rel: 'shortcut icon', href: 'favicon.ico'}],
+        ['meta', { property: 'og:image', content: './images/unicorn.png' }]
     ],
     markdown: {
         code: {
